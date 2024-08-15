@@ -5,6 +5,7 @@ from urllib.parse import urljoin, urlparse
 from colorama import init, Fore, Style
 
 
+
 init(autoreset=True)
 
 def crawl_url(base_url, output_file=None):
