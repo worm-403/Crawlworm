@@ -8,7 +8,20 @@ from colorama import init, Fore, Style
 
 init(autoreset=True)
 
-def crawl_url(base_url, output_file=None):
+def crawl_url(base_url, output_file=None, max_depth=2, current_depth=0, visited=None):
+
+    if visited is None:
+        visited = set()
+
+    if current_depth > max_depth:
+        return
+    
+    if base_url in visited:
+        return
+    
+    unique_urls = set()
+
+
     try:
         
         response = requests.get(base_url)
@@ -34,7 +47,9 @@ def crawl_url(base_url, output_file=None):
             link_domain = urlparse(link_url).netloc
 
             
-            if link_text and link_url and link_domain == base_domain:
+            if link_text and link_url and link_domain == base_domain and link_url not in unique_urls:
+                unique_urls.add(link_url)
+                
                 result = f'{Fore.CYAN}Texto: {Style.BRIGHT}{link_text}\n{Fore.GREEN}URL: {Style.BRIGHT}{link_url}\n{Fore.YELLOW}{Style.DIM}---{Style.RESET_ALL}'
                 results.append(result)
 
